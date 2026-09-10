@@ -12,6 +12,7 @@
     "dev:server": "npm run dev --workspace=server",
     "dev:client": "npm run dev --workspace=client",
     "build": "npm run build --workspaces --if-present",
+    "build:client": "npm run build --workspace=@devconnect/shared && npm run build --workspace=@devconnect/client",
     "test": "npm run test --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
     "start": "npm run start --workspace=server",
