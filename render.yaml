@@ -2,7 +2,7 @@ services:
   - type: web
     name: devconnect-server
     runtime: node
-    plan: starter
+    plan: free
     buildCommand: npm install && npm run db:generate && npm run build
     startCommand: npm run db:migrate && npm run db:seed && npm run start --workspace=server
     envVars:
@@ -11,9 +11,7 @@ services:
       - key: PORT
         value: 10000
       - key: DATABASE_URL
-        fromDatabase:
-          name: devconnect-postgres
-          property: connectionString
+        sync: false
       - key: JWT_SECRET
         generateValue: true
       - key: COOKIE_SECRET
@@ -22,9 +20,9 @@ services:
         value: 7d
       - key: CLIENT_URL
         value: http://localhost:5173
-
-databases:
-  - name: devconnect-postgres
-    plan: starter
-    databaseName: devconnect
-    user: devconnect_user
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
