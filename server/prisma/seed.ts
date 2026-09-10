@@ -27,13 +27,18 @@ const DEMO_EMAILS = [
 async function main() {
   console.log('Seeding DevConnect database with realistic community content and open-source showcases...');
 
-  // 1. SAFELY CLEAN UP EXISTING DEMO RECORDS ONLY (NEVER TOUCH REAL USERS)
+  // 1. SAFELY CHECK OR CLEAN EXISTING DEMO RECORDS ONLY (NEVER TOUCH REAL USERS)
   const existingDemoUsers = await prisma.user.findMany({
     where: {
       email: { in: DEMO_EMAILS },
     },
     select: { id: true, email: true },
   });
+
+  if (existingDemoUsers.length >= 10 && process.env.FORCE_SEED !== 'true') {
+    console.log(`Demo dataset already present in database (${existingDemoUsers.length} accounts). Skipping duplicate seed.`);
+    return;
+  }
 
   const demoUserIds = existingDemoUsers.map((u) => u.id);
 
